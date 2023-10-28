@@ -4,3 +4,4 @@ CFLAGS = -I/usr/local/include/ggml -I/usr/local/include
 install:
 	$(CC) $(CFLAGS) -shared -o libcencodec.so -c cencodec.cpp
 	install -v libcencodec.so /usr/local/lib/
+	install -v cencodec.h /usr/local/include/

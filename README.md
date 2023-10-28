@@ -46,12 +46,13 @@ func main() {
 
 	ectx, _ := encodec.LoadModel("/path/to/ggml-model.bin", gpuLayers)
 	defer ectx.Release()
+
 	ectx.SetTargetBandwidth(targetBandwidth)
 
 	compressedData, free, _ := ectx.CompressAudio(buf.AsFloat32Buffer().Data, runtime.NumCPU())
 	defer free()
 
-	gob.NewEncoder(w).Encode(ECDC{
+	gob.NewEncoder(out).Encode(ECDC{
 		BitDepth:    32,
 		NumChannels: 1,
 		SampleRate:  24000,
@@ -86,13 +87,14 @@ func main() {
 
 	ectx, _ := encodec.LoadModel("/path/to/ggml-model.bin", gpuLayers)
 	defer ectx.Release()
+
 	ectx.SetTargetBandwidth(ecdc.Bandwidth)
 
 	decompressData, free, _ := ectx.DecompressAudio(ecdc.Data, runtime.NumCPU())
 	defer free()
 
 	we := wav.NewEncoder(out, ecdc.SampleRate, 16, ecdc.NumChannels, ecdc.AudioFormat)
-	for _, d := range Decompress {
+	for _, d := range decompressData {
 		d *= 0x7fff
 		switch {
 		case 0x7fff < d:
