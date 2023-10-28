@@ -24,6 +24,8 @@ $ make install
 Compress
 
 ```go
+package main
+
 imort (
 	"os"
 	"runtime"
@@ -63,6 +65,8 @@ func main() {
 Decompress
 
 ```go
+package main
+
 imort (
 	"os"
 	"runtime"
