@@ -43,6 +43,10 @@ cencodec_compressed* cencodec_get_compress_codes(void* ectx) {
 
   data->codes_len = ctx->out_codes.size();
   data->codes = (int32_t*) malloc(data->codes_len * sizeof(int32_t));
+  if(nullptr == data->codes) {
+    free(data);
+    return nullptr;
+  }
   memcpy(data->codes, ctx->out_codes.data(), data->codes_len * sizeof(int32_t));
   return data;
 }
@@ -73,6 +77,10 @@ cencodec_decompressed* cencodec_get_decompress_audio(void* ectx) {
 
   data->audio_len = ctx->out_audio.size();
   data->audio = (float*) malloc(data->audio_len * sizeof(float));
+  if(nullptr == data->audio){
+    free(data);
+    return nullptr;
+  }
   memcpy(data->audio, ctx->out_audio.data(), data->audio_len * sizeof(float));
   return data;
 }
